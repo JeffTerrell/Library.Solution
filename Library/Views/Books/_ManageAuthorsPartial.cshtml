@@ -1,0 +1,23 @@
+@using Library.Models
+
+@model Library.Models.Book
+
+<p>Add an author to the book:</p>
+<input id="book-id" type="hidden" value=@Model.BookId>
+<select id="author-id">
+  @foreach (Author author in ViewData["Authors"] as List<Author>)
+  {
+    if (Model.JoinEntitiesAuthor.Where(join => join.AuthorId == author.AuthorId).Count() < 1) {
+    <option value=@author.AuthorId>@author.Name</option>
+    }
+  }
+</select>
+<button type="button" class="btn btn-dark" id="add-author-button">Add author</button>
+
+<script>
+  $("#add-author-button").on("click", () => {
+    let bookId = $("#book-id").val();
+    let authorId = $("#author-id option:selected").val();
+    $("#manage-authors-div").load("../AddAuthor", {BookId: bookId, AuthorId: authorId});
+  });
+</script>

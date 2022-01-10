@@ -8,7 +8,7 @@
 <h2>Book details:</h2>
 <p>@Model.Name</p>
 <p>Genre: @Model.Genre</p>
-@if (Model.JoinEntitiesAuthor.Count < 0)
+@if (Model.JoinEntitiesAuthor.Count > 0)
 {
 <p>Author(s):</p>
 <ul>
@@ -34,6 +34,9 @@ else
   <button type="button" class="btn btn-dark" id="edit-button">Edit book</button>
 </div>
 <div id="edit-form-div" class="initially-hidden">
+  <div id="manage-authors-div">
+    @await Html.PartialAsync("_ManageAuthorsPartial", Model, ViewData)
+  </div>
   @using(Html.BeginForm("Edit", "Books", FormMethod.Post))
   {
     <ul>
@@ -50,10 +53,12 @@ else
     <li>@Html.LabelFor(model => model.PublishDate)
     @Html.EditorFor(model => model.PublishDate)</li>
     </ul>
-    <input type="submit", value="Edit book", class="btn btn-dark"/>
+    <input type="submit" value="Edit book" class="btn btn-dark"/>
     <button type="button" class="btn btn-dark" id="stop-edit-button">Cancel edits</button>
   }
 </div>
+
+
 
 <div id="delete-button-div">
   <button type="button" class="btn btn-dark" id="delete-button">Delete book</button>

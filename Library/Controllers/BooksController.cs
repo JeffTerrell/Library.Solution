@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace Library.Controllers
 { 
@@ -38,6 +39,7 @@ namespace Library.Controllers
 
     public ActionResult Details(int id)
     {
+      ViewData["Authors"] = _db.Authors.ToList();
       Book model = _db.Books
         .Include(book => book.JoinEntitiesAuthor)
         .ThenInclude(join => join.Author)
@@ -60,5 +62,15 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
+
+    [HttpPost]
+    public PartialViewResult AddAuthor(int BookId, int AuthorId)
+    {
+      _db.AuthorBooks.Add(new AuthorBook() {BookId = BookId, AuthorId = AuthorId});
+      _db.SaveChanges();
+      Book model = _db.Books.FirstOrDefault(model => model.BookId == BookId);
+      ViewData["Authors"] = _db.Authors.ToList();
+      return PartialView("_ManageAuthorsPartial", model);
+    }
   }
-}
+}  
