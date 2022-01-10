@@ -5,8 +5,9 @@ namespace Library.Models
 {
   public class LibraryContext : IdentityDbContext<ApplicationUser>
   {
-  //   public DbSet<Class> Classes { get; set; }
-  //   public DbSet<ClassClass> ClassClass {get; set;}
+    public DbSet<Author> Authors { get; set; }
+    public DbSet<Book> Books { get; set; }
+    public DbSet<AuthorBook> AuthorBooks {get; set;}
 
     public LibraryContext(DbContextOptions options) : base(options) { }
 
