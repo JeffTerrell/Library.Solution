@@ -6,10 +6,10 @@
 
 <h1>Add a new book</h1>
 <ul></ul>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Books", FormMethod.Post))
 {
   <li>@Html.LabelFor(model => model.Name)
-  @Html.TextBoxFor(model => model.Name)</li>
+  @Html.TextBoxFor(model => model.Name, new {@required = "required"})</li>
 
   <li>@Html.LabelFor(model => model.Description)
   @Html.TextBoxFor(model => model.Description)</li>

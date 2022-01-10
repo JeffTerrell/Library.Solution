@@ -1,0 +1,70 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+@model Library.Models.Book
+
+<h2>Book details:</h2>
+<p>@Model.Name</p>
+<p>Genre: @Model.Genre</p>
+@if (Model.JoinEntitiesAuthor.Count < 0)
+{
+<p>Author(s):</p>
+<ul>
+  @foreach (AuthorBook authorbook in Model.JoinEntitiesAuthor)
+  {
+    <li>@authorbook.Author.Name</li>
+  }
+</ul>
+}
+<p>Publishing Date: @Model.PublishDate</p>
+<p>Description: @Model.Description</p>
+
+@if (Model.CheckedOut)
+{
+  <p>@Model.Name is currently checked out.</p>
+}
+else
+{
+  <p>@Model.Name is available for checkout.</p>
+}
+
+<div id="edit-button-div">
+  <button type="button" class="btn btn-dark" id="edit-button">Edit book</button>
+</div>
+<div id="edit-form-div" class="initially-hidden">
+  @using(Html.BeginForm("Edit", "Books", FormMethod.Post))
+  {
+    <ul>
+    @Html.HiddenFor(model => model.BookId)
+    <li>@Html.LabelFor(model => model.Name)
+    @Html.EditorFor(model => model.Name)</li>
+
+    <li>@Html.LabelFor(model => model.Description)
+    @Html.EditorFor(model => model.Description)</li>
+
+    <li>@Html.LabelFor(model => model.Genre)
+    @Html.EditorFor(model => model.Genre)</li>
+
+    <li>@Html.LabelFor(model => model.PublishDate)
+    @Html.EditorFor(model => model.PublishDate)</li>
+    </ul>
+    <input type="submit", value="Edit book", class="btn btn-dark"/>
+    <button type="button" class="btn btn-dark" id="stop-edit-button">Cancel edits</button>
+  }
+</div>
+
+<div id="delete-button-div">
+  <button type="button" class="btn btn-dark" id="delete-button">Delete book</button>
+</div>
+<div id="delete-confirm-div" class="initially-hidden">
+  @using(Html.BeginForm("Delete", "Books", FormMethod.Post))
+  {
+    @Html.HiddenFor(model => model.BookId)
+    <input type="submit" class="btn btn-dark" value="Confirm deletion" />
+    <button type="button" class="btn btn-dark" id="stop-delete-button">Cancel deletion</button>
+  }
+</div>
+
+<script src="~/js/details.js"></script>
