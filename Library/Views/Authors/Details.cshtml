@@ -1,0 +1,49 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+@model Library.Models.Author
+
+<h2>Author details:</h2>
+<p>@Model.Name</p>
+@if (Model.JoinEntitiesBook.Count < 0)
+{
+<p>Book(s):</p>
+<ul>
+  @foreach (AuthorBook authorbook in Model.JoinEntitiesBook)
+  {
+    <li>@authorbook.Book.Name</li>
+  }
+</ul>
+}
+
+<div id="edit-button-div">
+  <button type="button" class="btn btn-dark" id="edit-button">Edit author</button>
+</div>
+<div id="edit-form-div" class="initially-hidden">
+  @using(Html.BeginForm("Edit", "Authors", FormMethod.Post))
+  {
+    <ul>
+    @Html.HiddenFor(model => model.AuthorId)
+    <li>@Html.LabelFor(model => model.Name)
+    @Html.EditorFor(model => model.Name)</li>
+    </ul>
+    <input type="submit", value="Edit author", class="btn btn-dark"/>
+    <button type="button" class="btn btn-dark" id="stop-edit-button">Cancel edits</button>
+  }
+</div>
+
+<div id="delete-button-div">
+  <button type="button" class="btn btn-dark" id="delete-button">Delete book</button>
+</div>
+<div id="delete-confirm-div" class="initially-hidden">
+  @using(Html.BeginForm("Delete", "Authors", FormMethod.Post))
+  {
+    @Html.HiddenFor(model => model.AuthorId)
+    <input type="submit" class="btn btn-dark" value="Confirm deletion" />
+    <button type="button" class="btn btn-dark" id="stop-delete-button">Cancel deletion</button>
+  }
+</div>
+
+<script src="~/js/details.js"></script>

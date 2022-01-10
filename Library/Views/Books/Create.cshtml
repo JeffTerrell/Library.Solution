@@ -5,9 +5,10 @@
 @model Library.Models.Book
 
 <h1>Add a new book</h1>
-<ul></ul>
+
 @using (Html.BeginForm("Create", "Books", FormMethod.Post))
 {
+  <ul>
   <li>@Html.LabelFor(model => model.Name)
   @Html.TextBoxFor(model => model.Name, new {@required = "required"})</li>
 
@@ -19,6 +20,7 @@
 
   <li>@Html.LabelFor(model => model.PublishDate)
   @Html.EditorFor(model => model.PublishDate)</li>
-
+  </ul>
+  
   <input type="submit", value="Add this book", class="btn btn-dark"/>
 }

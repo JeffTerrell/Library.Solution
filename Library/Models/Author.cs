@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Library.Models
 {
@@ -12,6 +12,8 @@ namespace Library.Models
     }
 
     public int AuthorId { get; set; }
+
+    [Required]
     public string Name { get; set; }
 
     public virtual ICollection<AuthorBook> JoinEntitiesBook { get; set; }

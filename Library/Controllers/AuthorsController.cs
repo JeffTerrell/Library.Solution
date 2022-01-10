@@ -35,5 +35,30 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
+
+    public ActionResult Details(int id)
+    {
+      Author model = _db.Authors
+        .Include(author => author.JoinEntitiesBook)
+        .ThenInclude(join => join.Book)
+        .FirstOrDefault(author => author.AuthorId == id);
+      return View(model);
+    }
+
+    [HttpPost]
+    public ActionResult Edit(Author author)
+    {
+      _db.Entry(author).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Details", new {id = author.AuthorId});
+    }
+
+    public ActionResult Delete(Author author)
+    {
+      Author target = _db.Authors.FirstOrDefault(target => target.AuthorId == author.AuthorId);
+      _db.Authors.Remove(target);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }
