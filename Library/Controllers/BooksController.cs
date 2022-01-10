@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using System;
 
 namespace Library.Controllers
 { 
@@ -67,6 +66,17 @@ namespace Library.Controllers
     public PartialViewResult AddAuthor(int BookId, int AuthorId)
     {
       _db.AuthorBooks.Add(new AuthorBook() {BookId = BookId, AuthorId = AuthorId});
+      _db.SaveChanges();
+      Book model = _db.Books.FirstOrDefault(model => model.BookId == BookId);
+      ViewData["Authors"] = _db.Authors.ToList();
+      return PartialView("_ManageAuthorsPartial", model);
+    }
+
+    [HttpPost]
+    public PartialViewResult RemoveAuthor(int BookId, int AuthorId)
+    {
+      AuthorBook target = _db.AuthorBooks.FirstOrDefault(target => target.BookId == BookId && target.AuthorId == AuthorId);
+      _db.AuthorBooks.Remove(target);
       _db.SaveChanges();
       Book model = _db.Books.FirstOrDefault(model => model.BookId == BookId);
       ViewData["Authors"] = _db.Authors.ToList();

@@ -2,22 +2,54 @@
 
 @model Library.Models.Book
 
-<p>Add an author to the book:</p>
-<input id="book-id" type="hidden" value=@Model.BookId>
-<select id="author-id">
-  @foreach (Author author in ViewData["Authors"] as List<Author>)
+@if (Model.JoinEntitiesAuthor.Count > 0)
+{
+<p>Author(s):</p>
+<ul>
+  @foreach (AuthorBook authorbook in Model.JoinEntitiesAuthor)
   {
-    if (Model.JoinEntitiesAuthor.Where(join => join.AuthorId == author.AuthorId).Count() < 1) {
-    <option value=@author.AuthorId>@author.Name</option>
-    }
+    <li>
+      @authorbook.Author.Name
+      <input type="hidden" value=@authorbook.AuthorId />
+      <button type="button" class="remove-author initially-hidden btn btn-dark btn-sm">Remove author</button>
+    </li> 
   }
-</select>
-<button type="button" class="btn btn-dark" id="add-author-button">Add author</button>
+</ul>
+}
+
+<div id="edit-authors-button-div">
+  <button type="button" class="btn btn-dark" id="edit-authors-button">Edit authors</button>
+</div>
+<div id="edit-authors-div" class="initially-hidden">
+  <p>Add an author to the book:</p>
+  <input id="book-id" type="hidden" value=@Model.BookId>
+  <select id="author-id">
+    @foreach (Author author in ViewData["Authors"] as List<Author>)
+    {
+      if (Model.JoinEntitiesAuthor.Where(join => join.AuthorId == author.AuthorId).Count() < 1) {
+      <option value=@author.AuthorId>@author.Name</option>
+      }
+    }
+  </select>
+  <button type="button" class="btn btn-dark" id="add-author-button">Add author</button>
+</div>
 
 <script>
+  $("#edit-authors-button").on("click", () => {
+    $("#edit-authors-button-div").slideUp();
+    $("#edit-authors-div").slideDown();
+    $(".remove-author").show();
+  });
+
   $("#add-author-button").on("click", () => {
     let bookId = $("#book-id").val();
     let authorId = $("#author-id option:selected").val();
     $("#manage-authors-div").load("../AddAuthor", {BookId: bookId, AuthorId: authorId});
+  });
+
+  $(".remove-author").on("click", function() {
+    let bookId = $("#book-id").val();
+    let authorId = $(this).siblings("input").val();
+    $("#manage-authors-div").load("../RemoveAuthor", {BookId: bookId, AuthorId: authorId});
   });
 </script>
