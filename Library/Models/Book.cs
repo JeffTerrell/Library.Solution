@@ -14,6 +14,8 @@ namespace Library.Models
     }
 
     public int BookId { get; set; }
+
+    [Required]
     public string Name { get; set; }
     public string Genre { get; set; }
     public string Description { get; set; }
