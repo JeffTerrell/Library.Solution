@@ -28,8 +28,7 @@
       {
         htmlString += join.Author.Name + ", ";
       }
-      char[] trim = {' ',','};
-      htmlString = htmlString.TrimEnd(trim);
+      htmlString = htmlString.Remove(htmlString.Length -2, 2);
     }
   }
   if (book.Description != "")
