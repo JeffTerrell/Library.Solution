@@ -17,4 +17,10 @@
   <p>@Html.ActionLink($"{book.Name}", "Details", new { id = book.BookId })</p>
 }
 
+<h6>Books registered by @User.Identity.Name</h6>
+@foreach (Book book in ViewBag.UserBooks)
+{
+  <p>@book.Name</p>
+}
+
 <p>@Html.ActionLink("Add a new book to the library", "Create")</p>

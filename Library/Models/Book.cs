@@ -25,6 +25,7 @@ namespace Library.Models
     public DateTime PublishDate { get; set; }
 
     public bool CheckedOut { get; set; } = false;
+    public virtual ApplicationUser Librarian { get; set; }
 
     public virtual ICollection<AuthorBook> JoinEntitiesAuthor { get; }
   }

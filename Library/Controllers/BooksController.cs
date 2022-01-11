@@ -1,25 +1,34 @@
 using Library.Models;
 using Library.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
 
 namespace Library.Controllers
 { 
   
+  [Authorize]
   public class BooksController : Controller
   {
     private readonly LibraryContext _db;
-    public BooksController(LibraryContext db)
+    private readonly UserManager<ApplicationUser> _userManager;
+    public BooksController(UserManager<ApplicationUser> userManager, LibraryContext db)
     {
+      _userManager = userManager;
       _db = db;
     }
 
-    public ActionResult Index()
+    // [AllowAnonymous]
+    public async Task<ActionResult> Index()
     {
+      var librarian = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(librarian);
+      ViewBag.UserBooks = _db.Books.Where(entry => entry.Librarian.Id == currentUser.Id).ToList();
       return View(_db.Books.ToList());
     }
 
@@ -29,8 +38,11 @@ namespace Library.Controllers
     }
 
     [HttpPost]
-    public ActionResult Create(Book book)
+    public async Task<ActionResult> Create(Book book)
     {
+      var librarian = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+      var currentUser = await _userManager.FindByIdAsync(librarian);
+      book.Librarian = currentUser;
       _db.Books.Add(book);
       _db.SaveChanges();
       return RedirectToAction("Index");
