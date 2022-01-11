@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 namespace Library.Controllers
 { 
@@ -107,6 +108,7 @@ namespace Library.Controllers
     [HttpPost]
     public PartialViewResult AddCopy(int BookId)
     {
+      Console.WriteLine("reaching the route");
       _db.Copies.Add(new Copy() {BookId = BookId});
       _db.SaveChanges();
       Book model = _db.Books

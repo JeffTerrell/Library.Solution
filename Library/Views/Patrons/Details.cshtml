@@ -1,0 +1,45 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+@model Library.Models.Patron
+
+<h2>@Model.Name's Details:</h2>
+
+@* Edit details *@
+
+<h2>@Model.Name's checked out books:</h2>
+
+@if (Model.JoinEntitiesCopy.Count > 0)
+{
+  <ul>
+  @foreach (Copy copy in Model.JoinEntitiesCopy)
+  {
+    <li>
+      @copy.Book.Name <em>(Library Copy Id: @copy.CopyId)</em>
+      @using (Html.BeginForm("CheckIn", "Patrons", FormMethod.Post))
+      {
+        <input type="hidden" name="CopyId" value=@copy.CopyId />
+        <input type="submit" value="Check copy back in" class="btn btn-dark" />
+      }
+    </li>
+  }
+  </ul>
+}
+
+<h2>Check out a copy to @Model.Name:</h2>
+@using (Html.BeginForm("CheckOut", "Patrons", FormMethod.Post))
+{
+  <select name="CopyId">
+    @foreach (Copy copy in ViewBag.Copies)
+    {
+      if (copy.CheckedOut == false)
+      {
+        <option value=@copy.CopyId>@copy.CopyId - @copy.Book.Name</option>
+      }
+    }
+  </select>
+  <input type="hidden" name="PatronId" value=@Model.PatronId />
+  <input type="submit" value="Check out copy" class="btn btn-dark" />
+}

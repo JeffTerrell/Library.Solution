@@ -37,13 +37,43 @@ namespace Library.Controllers
     public ActionResult Create(Patron patron)
     {
       _db.Patrons.Add(patron);
+      _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     public ActionResult Details(int id)
     {
-      Patron model = _db.Patrons.FirstOrDefault(patron => patron.PatronId == id);
+      ViewBag.Copies = _db.Copies
+        .Include(copy => copy.Book)
+        .ToList();
+      Patron model = _db.Patrons
+        .Include(patron => patron.JoinEntitiesCopy)
+        .ThenInclude(join => join.Book)
+        .FirstOrDefault(patron => patron.PatronId == id);
       return View(model);
+    }
+
+    [HttpPost]
+    public ActionResult CheckOut(int CopyId, int PatronId)
+    {
+      Copy target = _db.Copies.FirstOrDefault(copy => copy.CopyId == CopyId);
+      target.PatronId = PatronId;
+      target.CheckedOut = true;
+      _db.Entry(target).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Details", new {id = PatronId});
+    }
+
+    [HttpPost]
+    public ActionResult CheckIn(int CopyId)
+    {
+      Copy target = _db.Copies.FirstOrDefault(copy => copy.CopyId == CopyId);
+      int patronId = target.PatronId;
+      target.PatronId = 0;
+      target.CheckedOut = false;
+      _db.Entry(target).State = EntityState.Modified;
+      _db.SaveChanges(); 
+      return RedirectToAction("Details", new {id = patronId});
     }
   }
 }

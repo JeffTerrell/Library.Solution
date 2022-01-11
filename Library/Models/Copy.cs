@@ -6,7 +6,7 @@ namespace Library.Models
     public int BookId {get; set;}
     public virtual Book Book {get; set;}
 
-    public int PatronId {get; set;} = 0;
+    public int PatronId {get; set;}
 
     public virtual Patron Patron {get; set;}
 
