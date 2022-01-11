@@ -34,7 +34,10 @@ namespace Library.Controllers
     [AllowAnonymous]
     public ActionResult PatronIndex()
     {
-      return View(_db.Books.ToList());
+      List<Book> model = _db.Books
+        .Include(book => book.JoinEntitiesAuthor)
+        .ToList();
+      return View(model);
     }
 
     public ActionResult Create()

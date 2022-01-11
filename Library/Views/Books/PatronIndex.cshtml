@@ -14,5 +14,28 @@
 
 @foreach (Book book in Model)
 {
-  <p>@book.Name</p>
+  string htmlString = book.Name;
+  if (book.JoinEntitiesAuthor.Count > 0)
+  {
+    if (book.JoinEntitiesAuthor.Count == 1)
+    {
+      htmlString += $"   By: {book.JoinEntitiesAuthor.First().Author.Name}";
+    }
+    else
+    {
+      htmlString+= "   By: ";
+      foreach(AuthorBook join in book.JoinEntitiesAuthor)
+      {
+        htmlString += join.Author.Name + ", ";
+      }
+      char[] trim = {' ',','};
+      htmlString = htmlString.TrimEnd(trim);
+    }
+  }
+  if (book.Description != "")
+  {
+    htmlString += $"   - {book.Description}";
+  }
+
+  <p>@htmlString</p>
 }
