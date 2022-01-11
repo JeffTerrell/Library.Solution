@@ -4,5 +4,11 @@
 
 <h1>Welcome to the Library Portal!</h1>
 
-<p>@Html.ActionLink("View Books", "Index", "Books")</p>
-<p>@Html.ActionLink("View Authors", "Index", "Authors")</p>
+@if (User.Identity.IsAuthenticated)
+{
+  <p>@Html.ActionLink("View Books", "Index", "Books")</p>
+  <p>@Html.ActionLink("View Authors", "Index", "Authors")</p>
+}
+else{
+  <p>@Html.ActionLink("View Patron Index", "PatronIndex", "Books")</p>
+}

@@ -23,12 +23,17 @@ namespace Library.Controllers
       _db = db;
     }
 
-    // [AllowAnonymous]
     public async Task<ActionResult> Index()
     {
       var librarian = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
       var currentUser = await _userManager.FindByIdAsync(librarian);
       ViewBag.UserBooks = _db.Books.Where(entry => entry.Librarian.Id == currentUser.Id).ToList();
+      return View(_db.Books.ToList());
+    }
+
+    [AllowAnonymous]
+    public ActionResult PatronIndex()
+    {
       return View(_db.Books.ToList());
     }
 
