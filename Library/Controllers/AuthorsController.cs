@@ -1,15 +1,17 @@
 using Library.Models;
 using Library.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Linq;
 
 namespace Library.Controllers
 { 
-  
+  [Authorize]
   public class AuthorsController : Controller
   {
     private readonly LibraryContext _db;

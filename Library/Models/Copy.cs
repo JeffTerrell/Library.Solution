@@ -6,6 +6,12 @@ namespace Library.Models
     public int BookId {get; set;}
     public virtual Book Book {get; set;}
 
+    public int PatronId {get; set;} = 0;
+
+    public virtual Patron Patron {get; set;}
+
     public bool CheckedOut {get; set;} = false;
+
+    //public User Librarian who last interacted with the record?
   }
 }
