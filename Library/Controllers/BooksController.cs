@@ -62,6 +62,7 @@ namespace Library.Controllers
       Book model = _db.Books
         .Include(book => book.JoinEntitiesAuthor)
         .ThenInclude(join => join.Author)
+        .Include(book => book.JoinEntitiesCopy)
         .FirstOrDefault(book => book.BookId == id);
       return View(model);
     }
@@ -101,6 +102,30 @@ namespace Library.Controllers
       Book model = _db.Books.FirstOrDefault(model => model.BookId == BookId);
       ViewData["Authors"] = _db.Authors.ToList();
       return PartialView("_ManageAuthorsPartial", model);
+    }
+
+    [HttpPost]
+    public PartialViewResult AddCopy(int BookId)
+    {
+      _db.Copies.Add(new Copy() {BookId = BookId});
+      _db.SaveChanges();
+      Book model = _db.Books
+        .Include(book => book.JoinEntitiesCopy)
+        .FirstOrDefault(book => book.BookId == BookId);
+      return PartialView("_ManageCopiesPartial", model);
+    }
+
+    [HttpPost]
+    public PartialViewResult RemoveCopy(int CopyId)
+    {
+      Copy target = _db.Copies.FirstOrDefault(copy => copy.CopyId == CopyId);
+      Book model = _db.Books
+        .Include(book => book.JoinEntitiesCopy)
+        .FirstOrDefault(book => book.BookId == target.BookId);
+      //TODO: check for book checked in before removing?
+      _db.Copies.Remove(target);
+      _db.SaveChanges();
+      return PartialView("_ManageCopiesPartial", model);
     }
   }
 }  

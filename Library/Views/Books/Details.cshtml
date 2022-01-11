@@ -9,21 +9,16 @@
 <p>@Model.Name</p>
 <p>Genre: @Model.Genre</p>
 
+<p>Publishing Date: @Model.PublishDate</p>
+<p>Description: @Model.Description</p>
+
 <div id="manage-authors-div">
   @await Html.PartialAsync("_ManageAuthorsPartial", Model, ViewData)
 </div>
 
-<p>Publishing Date: @Model.PublishDate</p>
-<p>Description: @Model.Description</p>
-
-@if (Model.CheckedOut)
-{
-  <p>@Model.Name is currently checked out.</p>
-}
-else
-{
-  <p>@Model.Name is available for checkout.</p>
-}
+<div id="manage-copies-div">
+  @await Html.PartialAsync("_ManageCopiesPartial", Model)
+</div>
 
 <div id="edit-button-div">
   <button type="button" class="btn btn-dark" id="edit-button">Edit book</button>

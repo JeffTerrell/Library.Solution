@@ -1,0 +1,38 @@
+@using Library.Models
+
+@model Library.Models.Book
+
+<p>Total copies in library: @Model.JoinEntitiesCopy.Count()</p>
+@if(Model.JoinEntitiesCopy.Count() > 0)
+{
+  <ul>
+  @foreach (Copy copy in Model.JoinEntitiesCopy)
+  {
+    <li>
+      Copy Id: @copy.CopyId
+      <input type="hidden" value=@copy.CopyId />
+      <button type="button" class="remove-copy btn btn-dark btn-sm">Remove copy from library</button>
+    </li>
+  }
+  </ul>
+}
+
+<div>
+  <input type="hidden" value=@Model.BookId />
+  <button type="button" id="add-copy-button" class="btn btn-dark btn-sm">Add a copy of this book to library</button>
+</div>
+
+<script>
+  console.log("script happens");
+  $("#add-copy-button").on("click", function() {
+    console.log("you clicked me");
+    let bookId = $(this).siblings("input").val();
+    console.log(bookId);
+    $("#manage-copies-div").load("../AddCopy", {BookId: bookId});
+  });
+
+  $(".remove-copy").on("click", function() {
+    let copyId = $(this).siblings("input").val();
+    $("#manage-copies-div").load("../RemoveCopy", {CopyId: copyId});
+  });
+</script>

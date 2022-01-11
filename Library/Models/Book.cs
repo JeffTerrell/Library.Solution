@@ -11,6 +11,7 @@ namespace Library.Models
     public Book()
     {
       this.JoinEntitiesAuthor = new HashSet<AuthorBook>();
+      this.JoinEntitiesCopy = new HashSet<Copy>();
     }
 
     public int BookId { get; set; }
@@ -24,9 +25,9 @@ namespace Library.Models
     [DisplayFormat(DataFormatString="{0:yyyy-MM-dd}", ApplyFormatInEditMode=true)]
     public DateTime PublishDate { get; set; }
 
-    public bool CheckedOut { get; set; } = false;
     public virtual ApplicationUser Librarian { get; set; }
 
     public virtual ICollection<AuthorBook> JoinEntitiesAuthor { get; }
+    public virtual ICollection<Copy> JoinEntitiesCopy {get;}
   }
 }
