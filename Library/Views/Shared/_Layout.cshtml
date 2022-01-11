@@ -15,6 +15,15 @@
 
     <p>@Html.ActionLink("Home page", "Index", "Home")</p>
     <p>@Html.ActionLink("Login menu", "Index", "Account")</p>
+    @if (User.Identity.IsAuthenticated)
+    {
+      <p>(Logged in as @User.Identity.Name.)</p>
+    }
+    else
+    {
+      <p>(Not logged in to any account.)</p>
+    }
+    <p></p>
     </div>
   </body>
 </html>
