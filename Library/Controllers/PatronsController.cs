@@ -69,7 +69,7 @@ namespace Library.Controllers
     {
       Copy target = _db.Copies.FirstOrDefault(copy => copy.CopyId == CopyId);
       int patronId = target.PatronId;
-      target.PatronId = 0;
+      target.PatronId = 1;
       target.CheckedOut = false;
       _db.Entry(target).State = EntityState.Modified;
       _db.SaveChanges(); 

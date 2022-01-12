@@ -108,8 +108,7 @@ namespace Library.Controllers
     [HttpPost]
     public PartialViewResult AddCopy(int BookId)
     {
-      Console.WriteLine("reaching the route");
-      _db.Copies.Add(new Copy() {BookId = BookId});
+      _db.Copies.Add(new Copy() {BookId = BookId, PatronId = 1});
       _db.SaveChanges();
       Book model = _db.Books
         .Include(book => book.JoinEntitiesCopy)
