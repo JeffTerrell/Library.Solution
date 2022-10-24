@@ -19,7 +19,7 @@ namespace Library.Controllers
     {
       _db = db;
     }
-
+  [AllowAnonymous]
     public ActionResult Index()
     {
       return View(_db.Authors.ToList());
@@ -37,7 +37,7 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-
+  [AllowAnonymous]
     public ActionResult Details(int id)
     {
       Author model = _db.Authors
